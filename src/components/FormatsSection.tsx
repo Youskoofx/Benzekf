@@ -103,13 +103,15 @@ export default function FormatsSection() {
   };
 
   const getTransform = (cardId: string, isActive: boolean) => {
-    if (prefersReducedMotion || !isActive) return 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
+    if (prefersReducedMotion) return 'perspective(1500px) rotateX(0deg) rotateY(0deg) scale(1)';
     
     const pos = cardMousePos[cardId] || { x: 0, y: 0 };
-    const rotateY = pos.x * 8;
-    const rotateX = -pos.y * 8;
+    const rotateY = pos.x * 15;
+    const rotateX = -pos.y * 15;
+    const scale = isActive ? 1.15 : 1;
+    const translateZ = isActive ? 80 : 0;
     
-    return `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+    return `perspective(1500px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(${translateZ}px) scale(${scale})`;
   };
 
   return (
@@ -182,8 +184,8 @@ export default function FormatsSection() {
           </div>
         </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Grid with enhanced 3D */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" style={{ perspective: '2000px' }}>
           {formats.map((format) => {
             const isActive = hoveredCard === format.id || tappedCard === format.id;
             
@@ -191,7 +193,7 @@ export default function FormatsSection() {
               <div
                 key={format.id}
                 ref={(el) => (cardRefs.current[format.id] = el)}
-                className="group relative bg-black overflow-hidden cursor-pointer"
+                className="group relative bg-black overflow-visible cursor-pointer"
                 onMouseEnter={() => handleMouseEnter(format.id)}
                 onMouseLeave={() => handleMouseLeave(format.id)}
                 onMouseMove={(e) => handleMouseMove(e, format.id)}
@@ -200,31 +202,74 @@ export default function FormatsSection() {
                   aspectRatio: '2.39/1',
                   transform: getTransform(format.id, isActive),
                   transition: isActive 
-                    ? 'transform 0.1s cubic-bezier(0.2, 0.8, 0.2, 1)' 
-                    : 'transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1)',
+                    ? 'transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1)' 
+                    : 'transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1)',
                   willChange: 'transform',
+                  transformStyle: 'preserve-3d',
                   boxShadow: isActive 
-                    ? '0 20px 60px rgba(0, 224, 164, 0.3), 0 0 80px rgba(0, 224, 164, 0.2), inset 0 0 40px rgba(0, 224, 164, 0.1)'
+                    ? '0 30px 90px rgba(0, 224, 164, 0.5), 0 0 120px rgba(0, 224, 164, 0.3), inset 0 0 60px rgba(0, 224, 164, 0.15), 0 0 200px rgba(0, 224, 164, 0.2)'
                     : '0 10px 30px rgba(0, 0, 0, 0.5)',
-                  border: isActive ? '1px solid rgba(0, 224, 164, 0.3)' : '1px solid rgba(255, 255, 255, 0.05)'
+                  border: isActive ? '2px solid rgba(0, 224, 164, 0.5)' : '1px solid rgba(255, 255, 255, 0.05)',
+                  borderRadius: '4px',
+                  overflow: 'hidden'
                 }}
               >
-                {/* Enhanced magnetic cursor glow */}
+                {/* Ultra enhanced magnetic cursor glow */}
                 {isActive && !prefersReducedMotion && (
-                  <div
-                    className="absolute pointer-events-none z-30"
-                    style={{
-                      left: `${(cardMousePos[format.id]?.x || 0) * 50 + 50}%`,
-                      top: `${(cardMousePos[format.id]?.y || 0) * 50 + 50}%`,
-                      width: '300px',
-                      height: '300px',
-                      background: 'radial-gradient(circle, rgba(0, 224, 164, 0.4) 0%, rgba(0, 224, 164, 0.2) 30%, transparent 70%)',
-                      transform: 'translate(-50%, -50%)',
-                      transition: 'all 0.15s ease-out',
-                      mixBlendMode: 'screen',
-                      filter: 'blur(20px)'
-                    }}
-                  />
+                  <>
+                    <div
+                      className="absolute pointer-events-none z-30"
+                      style={{
+                        left: `${(cardMousePos[format.id]?.x || 0) * 50 + 50}%`,
+                        top: `${(cardMousePos[format.id]?.y || 0) * 50 + 50}%`,
+                        width: '400px',
+                        height: '400px',
+                        background: 'radial-gradient(circle, rgba(0, 224, 164, 0.6) 0%, rgba(0, 224, 164, 0.3) 30%, transparent 70%)',
+                        transform: 'translate(-50%, -50%)',
+                        transition: 'all 0.1s ease-out',
+                        mixBlendMode: 'screen',
+                        filter: 'blur(30px)',
+                        animation: 'magneticPulse 2s ease-in-out infinite'
+                      }}
+                    />
+                    <div
+                      className="absolute pointer-events-none z-30"
+                      style={{
+                        left: `${(cardMousePos[format.id]?.x || 0) * 50 + 50}%`,
+                        top: `${(cardMousePos[format.id]?.y || 0) * 50 + 50}%`,
+                        width: '200px',
+                        height: '200px',
+                        background: 'radial-gradient(circle, rgba(230, 57, 70, 0.4) 0%, transparent 70%)',
+                        transform: 'translate(-50%, -50%)',
+                        transition: 'all 0.12s ease-out',
+                        mixBlendMode: 'screen',
+                        filter: 'blur(20px)'
+                      }}
+                    />
+                  </>
+                )}
+
+                {/* 3D depth layers */}
+                {isActive && !prefersReducedMotion && (
+                  <>
+                    <div 
+                      className="absolute inset-0 pointer-events-none"
+                      style={{
+                        background: 'linear-gradient(135deg, rgba(0, 224, 164, 0.1) 0%, transparent 50%, rgba(230, 57, 70, 0.1) 100%)',
+                        transform: 'translateZ(20px)',
+                        mixBlendMode: 'screen'
+                      }}
+                    />
+                    <div 
+                      className="absolute inset-0 pointer-events-none"
+                      style={{
+                        background: 'radial-gradient(circle at 30% 30%, rgba(0, 224, 164, 0.15) 0%, transparent 60%)',
+                        transform: 'translateZ(40px)',
+                        mixBlendMode: 'screen',
+                        animation: 'depthPulse 3s ease-in-out infinite'
+                      }}
+                    />
+                  </>
                 )}
 
                 {/* Thumbnail with film burn effect */}
@@ -254,7 +299,7 @@ export default function FormatsSection() {
                   />
                 </div>
 
-                {/* Video with enhanced VFX */}
+                {/* Video with ULTRA enhanced VFX */}
                 <div
                   className="absolute inset-0"
                   style={{
@@ -272,7 +317,7 @@ export default function FormatsSection() {
                     preload="metadata"
                     style={{
                       filter: isActive && !prefersReducedMotion
-                        ? 'grayscale(20%) contrast(1.12) brightness(0.95) saturate(0.9)'
+                        ? 'grayscale(10%) contrast(1.2) brightness(1) saturate(1.1)'
                         : 'grayscale(100%) contrast(1.1) brightness(0.8)',
                       transition: 'filter 0.4s cubic-bezier(0.2, 0.8, 0.2, 1)'
                     }}
@@ -280,26 +325,44 @@ export default function FormatsSection() {
                     <source src={format.videoUrl} type="video/mp4" />
                   </video>
 
-                  {/* Enhanced bloom with color */}
+                  {/* Multi-layer bloom */}
                   {isActive && !prefersReducedMotion && (
-                    <div 
-                      className="absolute inset-0 pointer-events-none mix-blend-screen"
-                      style={{
-                        background: 'radial-gradient(ellipse at 50% 30%, rgba(0, 224, 164, 0.15) 0%, transparent 50%)',
-                        animation: 'colorPulse 3s ease-in-out infinite'
-                      }}
-                    />
+                    <>
+                      <div 
+                        className="absolute inset-0 pointer-events-none mix-blend-screen"
+                        style={{
+                          background: 'radial-gradient(ellipse at 50% 30%, rgba(0, 224, 164, 0.25) 0%, transparent 50%)',
+                          animation: 'colorPulse 2s ease-in-out infinite'
+                        }}
+                      />
+                      <div 
+                        className="absolute inset-0 pointer-events-none mix-blend-screen"
+                        style={{
+                          background: 'radial-gradient(ellipse at 70% 60%, rgba(230, 57, 70, 0.15) 0%, transparent 50%)',
+                          animation: 'colorPulse 2.5s ease-in-out infinite reverse'
+                        }}
+                      />
+                    </>
                   )}
 
-                  {/* Chromatic aberration simulation */}
+                  {/* Enhanced chromatic aberration */}
                   {isActive && !prefersReducedMotion && (
-                    <div 
-                      className="absolute inset-0 pointer-events-none"
-                      style={{
-                        background: 'linear-gradient(90deg, rgba(255,0,0,0.015) 0%, transparent 2%, transparent 98%, rgba(0,0,255,0.015) 100%)',
-                        mixBlendMode: 'screen'
-                      }}
-                    />
+                    <>
+                      <div 
+                        className="absolute inset-0 pointer-events-none"
+                        style={{
+                          background: 'linear-gradient(90deg, rgba(0, 224, 164, 0.08) 0%, transparent 3%, transparent 97%, rgba(230, 57, 70, 0.08) 100%)',
+                          mixBlendMode: 'screen'
+                        }}
+                      />
+                      <div 
+                        className="absolute inset-0 pointer-events-none"
+                        style={{
+                          background: 'linear-gradient(0deg, rgba(0, 224, 164, 0.05) 0%, transparent 3%, transparent 97%, rgba(230, 57, 70, 0.05) 100%)',
+                          mixBlendMode: 'screen'
+                        }}
+                      />
+                    </>
                   )}
 
                   {/* Scanlines */}
@@ -321,66 +384,84 @@ export default function FormatsSection() {
                     }}
                   />
 
-                  {/* Enhanced letterbox with glow */}
+                  {/* Enhanced letterbox with animated glow */}
                   {isActive && (
                     <>
                       <div 
                         className="absolute top-0 left-0 right-0 bg-black pointer-events-none"
                         style={{
                           height: '8%',
-                          opacity: isActive ? 0.9 : 0,
+                          opacity: isActive ? 0.95 : 0,
                           transition: 'opacity 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s',
-                          boxShadow: '0 2px 20px rgba(0, 224, 164, 0.3)'
+                          boxShadow: '0 4px 30px rgba(0, 224, 164, 0.5), 0 2px 15px rgba(230, 57, 70, 0.3)',
+                          animation: 'letterboxGlow 3s ease-in-out infinite'
                         }}
                       />
                       <div 
                         className="absolute bottom-0 left-0 right-0 bg-black pointer-events-none"
                         style={{
                           height: '8%',
-                          opacity: isActive ? 0.9 : 0,
+                          opacity: isActive ? 0.95 : 0,
                           transition: 'opacity 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s',
-                          boxShadow: '0 -2px 20px rgba(0, 224, 164, 0.3)'
+                          boxShadow: '0 -4px 30px rgba(0, 224, 164, 0.5), 0 -2px 15px rgba(230, 57, 70, 0.3)',
+                          animation: 'letterboxGlow 3s ease-in-out infinite'
                         }}
                       />
                     </>
                   )}
                 </div>
 
-                {/* Enhanced particles with color */}
+                {/* ULTRA enhanced particles */}
                 {isActive && !prefersReducedMotion && (
                   <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                    {[...Array(12)].map((_, i) => (
+                    {[...Array(20)].map((_, i) => (
                       <div
                         key={i}
-                        className="absolute w-[3px] h-[3px] rounded-full"
+                        className="absolute rounded-full"
                         style={{
                           left: `${Math.random() * 100}%`,
                           top: `${Math.random() * 100}%`,
+                          width: i % 4 === 0 ? '4px' : '2px',
+                          height: i % 4 === 0 ? '4px' : '2px',
                           background: i % 3 === 0 
-                            ? 'radial-gradient(circle, rgba(0, 224, 164, 0.8) 0%, transparent 70%)'
-                            : 'radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, transparent 70%)',
+                            ? 'radial-gradient(circle, rgba(0, 224, 164, 1) 0%, transparent 70%)'
+                            : i % 3 === 1
+                            ? 'radial-gradient(circle, rgba(230, 57, 70, 0.8) 0%, transparent 70%)'
+                            : 'radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, transparent 70%)',
                           boxShadow: i % 3 === 0 
-                            ? '0 0 10px rgba(0, 224, 164, 0.8)'
-                            : '0 0 6px rgba(255, 255, 255, 0.6)',
-                          animation: `float ${3 + Math.random() * 4}s ease-in-out infinite`,
+                            ? '0 0 15px rgba(0, 224, 164, 1), 0 0 30px rgba(0, 224, 164, 0.5)'
+                            : i % 3 === 1
+                            ? '0 0 12px rgba(230, 57, 70, 0.8)'
+                            : '0 0 8px rgba(255, 255, 255, 0.8)',
+                          animation: `float ${2 + Math.random() * 5}s ease-in-out infinite`,
                           animationDelay: `${Math.random() * 2}s`,
-                          opacity: 0.2 + Math.random() * 0.3
+                          opacity: 0.3 + Math.random() * 0.5
                         }}
                       />
                     ))}
                   </div>
                 )}
 
-                {/* Light sweep on hover */}
+                {/* Enhanced light sweep */}
                 {isActive && !prefersReducedMotion && (
-                  <div 
-                    className="absolute inset-0 pointer-events-none"
-                    style={{
-                      background: 'linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.08) 50%, transparent 100%)',
-                      transform: 'translateX(-100%)',
-                      animation: 'sweep 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards'
-                    }}
-                  />
+                  <>
+                    <div 
+                      className="absolute inset-0 pointer-events-none"
+                      style={{
+                        background: 'linear-gradient(120deg, transparent 0%, rgba(0, 224, 164, 0.3) 50%, transparent 100%)',
+                        transform: 'translateX(-100%)',
+                        animation: 'sweep 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards'
+                      }}
+                    />
+                    <div 
+                      className="absolute inset-0 pointer-events-none"
+                      style={{
+                        background: 'linear-gradient(60deg, transparent 0%, rgba(230, 57, 70, 0.2) 50%, transparent 100%)',
+                        transform: 'translateX(-100%)',
+                        animation: 'sweep 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s forwards'
+                      }}
+                    />
+                  </>
                 )}
 
                 {/* Micro glitch on entry */}
@@ -401,6 +482,25 @@ export default function FormatsSection() {
       </div>
 
       <style>{`
+        @keyframes magneticPulse {
+          0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+          50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        @keyframes depthPulse {
+          0%, 100% { opacity: 0.15; }
+          50% { opacity: 0.3; }
+        }
+
+        @keyframes letterboxGlow {
+          0%, 100% { 
+            box-shadow: 0 4px 30px rgba(0, 224, 164, 0.5), 0 2px 15px rgba(230, 57, 70, 0.3);
+          }
+          50% { 
+            box-shadow: 0 6px 50px rgba(0, 224, 164, 0.7), 0 3px 25px rgba(230, 57, 70, 0.5);
+          }
+        }
+
         @keyframes titlePulse {
           0%, 100% { 
             filter: drop-shadow(0 0 30px rgba(0, 224, 164, 0.4));
@@ -429,15 +529,15 @@ export default function FormatsSection() {
         }
 
         @keyframes colorPulse {
-          0%, 100% { opacity: 0.15; }
-          50% { opacity: 0.25; }
+          0%, 100% { opacity: 0.25; }
+          50% { opacity: 0.4; }
         }
 
         @keyframes float {
           0%, 100% { transform: translate(0, 0); }
-          25% { transform: translate(10px, -15px); }
-          50% { transform: translate(-5px, -30px); }
-          75% { transform: translate(-15px, -15px); }
+          25% { transform: translate(15px, -20px); }
+          50% { transform: translate(-8px, -40px); }
+          75% { transform: translate(-20px, -20px); }
         }
 
         @keyframes sweep {
