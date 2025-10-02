@@ -35,10 +35,10 @@ export default function HeroSection() {
         }}
       />
 
-      {/* Hero content */}
-      <div className="relative z-10 text-center px-6 max-w-6xl mx-auto">
+      {/* Hero content - Mobile optimized */}
+      <div className="relative z-10 text-center px-4 sm:px-6 max-w-6xl mx-auto w-full">
         <h1 
-          className="text-8xl md:text-9xl lg:text-[12rem] font-black mb-8 text-white"
+          className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-[12rem] font-black mb-6 sm:mb-8 text-white leading-none"
           style={{ 
             fontFamily: 'Space Grotesk, sans-serif',
             letterSpacing: '-0.03em'
@@ -48,7 +48,7 @@ export default function HeroSection() {
         </h1>
 
         <p 
-          className="text-3xl md:text-4xl text-gray-300 mb-6 italic"
+          className="text-lg sm:text-2xl md:text-3xl lg:text-4xl text-gray-300 mb-4 sm:mb-6 italic px-2"
           style={{ 
             fontFamily: 'Inter, sans-serif',
             letterSpacing: '0.01em'
@@ -58,7 +58,7 @@ export default function HeroSection() {
         </p>
 
         <p 
-          className="text-xl md:text-2xl text-gray-400 mb-12 uppercase tracking-widest"
+          className="text-sm sm:text-lg md:text-xl lg:text-2xl text-gray-400 mb-8 sm:mb-12 uppercase tracking-widest px-2"
           style={{ 
             fontFamily: 'Space Grotesk, sans-serif',
             letterSpacing: '0.15em'
@@ -67,12 +67,12 @@ export default function HeroSection() {
           {t("hero_role")}
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-stretch sm:items-center px-4 sm:px-0">
           <a
             href="https://www.tiktok.com/@benzekf"
             target="_blank"
             rel="noopener noreferrer"
-            className="px-10 py-5 bg-white text-black font-bold text-lg transition-all duration-300 hover:bg-gray-200 uppercase tracking-wider"
+            className="w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 bg-white text-black font-bold text-base sm:text-lg transition-all duration-300 hover:bg-gray-200 uppercase tracking-wider text-center"
             style={{ fontFamily: 'Space Grotesk, sans-serif' }}
           >
             {t("cta_tiktok")}
@@ -82,7 +82,7 @@ export default function HeroSection() {
             href="https://www.instagram.com/benzekf"
             target="_blank"
             rel="noopener noreferrer"
-            className="px-10 py-5 bg-transparent border-2 border-white text-white font-bold text-lg transition-all duration-300 hover:bg-white hover:text-black uppercase tracking-wider"
+            className="w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 bg-transparent border-2 border-white text-white font-bold text-base sm:text-lg transition-all duration-300 hover:bg-white hover:text-black uppercase tracking-wider text-center"
             style={{ fontFamily: 'Space Grotesk, sans-serif' }}
           >
             {t("cta_instagram")}
