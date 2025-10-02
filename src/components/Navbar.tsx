@@ -15,6 +15,15 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Close menu when clicking outside
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [isMenuOpen]);
+
   return (
     <nav 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
@@ -23,12 +32,12 @@ export default function Navbar() {
           : 'bg-transparent'
       }`}
     >
-      <div className="mx-auto max-w-7xl px-6 py-6">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-4 sm:py-6">
         <div className="flex items-center justify-between">
-          {/* Logo - Taille normale avec Space Grotesk */}
+          {/* Logo - Responsive */}
           <a 
             href="#hero" 
-            className="text-2xl md:text-3xl font-bold text-white tracking-tight hover:opacity-80 transition-opacity duration-300"
+            className="text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-tight hover:opacity-80 transition-opacity duration-300"
             style={{ 
               fontFamily: 'Space Grotesk, sans-serif'
             }}
@@ -37,40 +46,40 @@ export default function Navbar() {
           </a>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-12">
+          <div className="hidden lg:flex items-center gap-8 xl:gap-12">
             <a 
               href="#values" 
-              className="text-sm text-white/70 hover:text-white transition-colors uppercase tracking-wider"
+              className="text-xs xl:text-sm text-white/70 hover:text-white transition-colors uppercase tracking-wider"
             >
               {t("nav_valeur")}
             </a>
             <a 
               href="#gallery" 
-              className="text-sm text-white/70 hover:text-white transition-colors uppercase tracking-wider"
+              className="text-xs xl:text-sm text-white/70 hover:text-white transition-colors uppercase tracking-wider"
             >
               {t("nav_galerie")}
             </a>
             <a 
               href="#content-types" 
-              className="text-sm text-white/70 hover:text-white transition-colors uppercase tracking-wider"
+              className="text-xs xl:text-sm text-white/70 hover:text-white transition-colors uppercase tracking-wider"
             >
               {t("nav_formats")}
             </a>
             <a 
               href="#concepts" 
-              className="text-sm text-white/70 hover:text-white transition-colors uppercase tracking-wider"
+              className="text-xs xl:text-sm text-white/70 hover:text-white transition-colors uppercase tracking-wider"
             >
               {t("nav_concepts")}
             </a>
             <a 
               href="#stats" 
-              className="text-sm text-white/70 hover:text-white transition-colors uppercase tracking-wider"
+              className="text-xs xl:text-sm text-white/70 hover:text-white transition-colors uppercase tracking-wider"
             >
               {t("nav_reseaux")}
             </a>
             <a 
               href="#booking" 
-              className="text-sm text-white/70 hover:text-white transition-colors uppercase tracking-wider"
+              className="text-xs xl:text-sm text-white/70 hover:text-white transition-colors uppercase tracking-wider"
             >
               {t("nav_booking")}
             </a>
@@ -79,7 +88,7 @@ export default function Navbar() {
           {/* Mobile menu button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden text-white p-2"
+            className="lg:hidden text-white p-2 hover:bg-white/10 rounded transition-colors"
             aria-label="Toggle menu"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -92,51 +101,53 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* Mobile Navigation - Full screen overlay */}
         {isMenuOpen && (
-          <div className="md:hidden mt-6 pb-6 space-y-4 border-t border-white/10 pt-6">
-            <a 
-              href="#values" 
-              className="block text-white/70 hover:text-white transition-colors uppercase tracking-wider"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              {t("nav_valeur")}
-            </a>
-            <a 
-              href="#gallery" 
-              className="block text-white/70 hover:text-white transition-colors uppercase tracking-wider"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              {t("nav_galerie")}
-            </a>
-            <a 
-              href="#content-types" 
-              className="block text-white/70 hover:text-white transition-colors uppercase tracking-wider"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              {t("nav_formats")}
-            </a>
-            <a 
-              href="#concepts" 
-              className="block text-white/70 hover:text-white transition-colors uppercase tracking-wider"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              {t("nav_concepts")}
-            </a>
-            <a 
-              href="#stats" 
-              className="block text-white/70 hover:text-white transition-colors uppercase tracking-wider"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              {t("nav_reseaux")}
-            </a>
-            <a 
-              href="#booking" 
-              className="block text-white/70 hover:text-white transition-colors uppercase tracking-wider"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              {t("nav_booking")}
-            </a>
+          <div className="lg:hidden fixed inset-0 top-[72px] bg-black/95 backdrop-blur-lg z-50">
+            <div className="flex flex-col items-center justify-center h-full space-y-8 px-6">
+              <a 
+                href="#values" 
+                className="text-2xl text-white/70 hover:text-white transition-colors uppercase tracking-wider"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {t("nav_valeur")}
+              </a>
+              <a 
+                href="#gallery" 
+                className="text-2xl text-white/70 hover:text-white transition-colors uppercase tracking-wider"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {t("nav_galerie")}
+              </a>
+              <a 
+                href="#content-types" 
+                className="text-2xl text-white/70 hover:text-white transition-colors uppercase tracking-wider"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {t("nav_formats")}
+              </a>
+              <a 
+                href="#concepts" 
+                className="text-2xl text-white/70 hover:text-white transition-colors uppercase tracking-wider"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {t("nav_concepts")}
+              </a>
+              <a 
+                href="#stats" 
+                className="text-2xl text-white/70 hover:text-white transition-colors uppercase tracking-wider"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {t("nav_reseaux")}
+              </a>
+              <a 
+                href="#booking" 
+                className="text-2xl text-white/70 hover:text-white transition-colors uppercase tracking-wider"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {t("nav_booking")}
+              </a>
+            </div>
           </div>
         )}
       </div>

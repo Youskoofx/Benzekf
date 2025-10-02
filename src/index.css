@@ -10,8 +10,9 @@
   body {
     @apply bg-black text-white;
     font-family: 'Inter', sans-serif;
-    overflow-x: hidden;
+    overflow-x: hidden !important;
     max-width: 100vw;
+    position: relative;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -20,16 +21,26 @@
   }
 }
 
-/* Prevent horizontal scroll on all elements */
+/* CRITICAL: Prevent horizontal scroll on ALL elements */
 * {
   max-width: 100%;
   box-sizing: border-box;
 }
 
 html, body {
-  overflow-x: hidden;
+  overflow-x: hidden !important;
   width: 100%;
   position: relative;
+}
+
+html {
+  overflow-x: hidden !important;
+}
+
+/* Prevent any element from causing horizontal scroll */
+body > * {
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 /* Cinematic film grain texture */
@@ -94,6 +105,15 @@ html {
   /* Prevent zoom on input focus */
   input, textarea, select {
     font-size: 16px !important;
+  }
+  
+  /* Extra safety for mobile */
+  * {
+    max-width: 100vw !important;
+  }
+  
+  section {
+    overflow-x: hidden !important;
   }
 }
 
